@@ -38,8 +38,9 @@ To run the Word Unscrambler application locally:
 
 1. Clone this repository to your local machine.
 2. Install the required Python libraries using `pip install -r requirements.txt`.
-3. Run the Flask application using `python word_unscrambler.py`.
-4. Access the application in your web browser at `http://localhost:5143`.
+3. Ensure that the `index.html` (HTML file) is stored in the `templates` folder.
+4. Run the Flask application using `python word_unscrambler.py`.
+5. Access the application in your web browser at `http://localhost:5143`.
 
 ## Contributing 🤝
 
