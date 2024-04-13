@@ -49,4 +49,7 @@ Contributions are welcome! If you have any suggestions, feature requests, or fin
 
 The word list used in this project is sourced from [dwyl/english-words](https://github.com/dwyl/english-words).
 
+## License 📄
+
+Free to use, no strings attached!
 
