@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Unscrambler</title>
+    <style>
+        /* Add CSS styles for increased spacing */
+        form {
+            margin-bottom: 20px;  /* Add margin at the bottom of the form */
+        }
+
+        label {
+            display: block;  /* Display labels as block elements */
+            margin-bottom: 8px;  /* Add margin at the bottom of labels */
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;  /* Set input width to 100% */
+            padding: 8px;  /* Add padding to inputs */
+            margin-bottom: 12px;  /* Add margin at the bottom of inputs */
+            box-sizing: border-box;  /* Include padding and border in the input's total width */
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;  /* Set background color for submit button */
+            color: white;  /* Set text color for submit button */
+            padding: 10px 20px;  /* Add padding to submit button */
+            border: none;  /* Remove border from submit button */
+            border-radius: 4px;  /* Add border radius to submit button */
+            cursor: pointer;  /* Change cursor to pointer on hover */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;  /* Change background color on hover */
+        }
+
+        /* Add style for results */
+        #results {
+            margin-top: 20px;  /* Add margin at the top of results */
+        }
+
+        #results ul {
+            list-style-type: none;  /* Remove bullet points from list */
+            padding: 0;  /* Remove padding from list */
+        }
+
+        #results ul li {
+            margin-bottom: 5px;  /* Add margin at the bottom of list items */
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Unscrambler</h1>
+    <form method="post">  <!-- Form for user input with method set to POST -->
+        <label for="length">Length of the word:</label>
+        <input type="number" id="length" name="length" required><br>
+        
+        <label for="must_include">Letters that must be included:</label>
+        <input type="text" id="must_include" name="must_include"><br>
+        
+        <label for="avoid">Letters to avoid:</label>
+        <input type="text" id="avoid" name="avoid"><br>
+        
+        <label for="must_pos">Specific positions of must-consist letters:</label>
+        <input type="text" id="must_pos" name="must_pos" placeholder="e.g., a1 b2 c3"><br>
+        
+        <label for="avoid_pos">Specific positions to avoid for must-consist letters:</label>
+        <input type="text" id="avoid_pos" name="avoid_pos" placeholder="e.g., d4 e5 f6"><br>
+        
+        <input type="submit" value="Submit">  <!-- Submit button to submit the form -->
+    </form>
+
+    <!-- Results section -->
+    <div id="results">
+        {% if filtered_words %}
+            <h2>Filtered words matching your criteria:</h2>  <!-- Heading for filtered words -->
+            <ul>
+                {% for word in filtered_words %}
+                    <li>{{ word }}</li>  <!-- List item for each filtered word -->
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
