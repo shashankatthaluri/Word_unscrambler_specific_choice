@@ -20,6 +20,7 @@ Word Unscrambler is a simple web application that helps you find words based on 
    - Letters to avoid
    - Specific positions of letters to include
    - Specific positions of letters to avoid
+   - Recently we updated letters that repeat option
 3. Click the "Submit" button to view the filtered list of words that match your criteria.
 
 ## Why I Built This Project? 🌟
