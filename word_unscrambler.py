@@ -5,7 +5,8 @@ app = Flask(__name__)  # Create a Flask application instance
 
 # Function to download words from a URL
 def download_words():
-    url = "https://raw.githubusercontent.com/dwyl/english-words/master/words.txt"  # Define the URL of the word list
+    url = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"  # Define the URL of the word list
+    # please do visit the github page. I used words_alpha because it consists of only alphabets, if you need numbers and special characters included you change the words_alpha.txt into word.txt
     response = requests.get(url)  # Send an HTTP GET request to the URL
     if response.status_code == 200:  # If the request is successful
         return response.text.splitlines()  # Return the text content of the response split into lines (words)
@@ -16,7 +17,7 @@ def download_words():
 word_list = download_words()  # Call the download_words() function to get the word list
 
 # Function to filter words based on user criteria
-def filter_words(words, length=None, must_include=None, avoid=None, must_include_positions=None, avoid_positions=None):
+def filter_words(words, length=None, must_include=None, avoid=None, repetition=None, must_include_positions=None, avoid_positions=None):
     filtered_words = []  # Initialize an empty list to store filtered words
     for word in words:  # Iterate over each word in the word list
         if length and len(word) != length:  # If length is specified and the word length doesn't match
@@ -25,6 +26,8 @@ def filter_words(words, length=None, must_include=None, avoid=None, must_include
             continue  # Skip to the next word
         if avoid and any(char in word for char in avoid):  # If avoid letters are specified and any of them are in the word
             continue  # Skip to the next word
+        if repetition and not all(word.count(char) > 1 for char in repetition):  # if repetition letters are specified they must at least repeat once
+            continue 
         if must_include_positions and not all(word[pos - 1] == char for char, pos in must_include_positions):  # If specific positions to include are specified and they don't match
             continue  # Skip to the next word
         if avoid_positions and any(word[pos - 1] == char for char, pos in avoid_positions):  # If specific positions to avoid are specified and any of them match
@@ -39,6 +42,7 @@ def home():
         length = request.form['length']  # Get the value of the 'length' field from the form
         must_include = request.form['must_include'].lower()  # Get the value of the 'must_include' field from the form and convert to lowercase
         avoid = request.form['avoid'].lower()  # Get the value of the 'avoid' field from the form and convert to lowercase
+        repetition = request.form['repetition'].lower() # Get the value of the 'repetition' field from the form and convert to lowercase
         must_pos = request.form['must_pos']  # Get the value of the 'must_pos' field from the form
         avoid_pos = request.form['avoid_pos']  # Get the value of the 'avoid_pos' field from the form
         
@@ -49,11 +53,12 @@ def home():
         length = int(length) if length.isdigit() else None  # Convert length to an integer if it consists of digits
         must_include = must_include.split() if must_include else None  # Split must_include string into a list of characters if it's not empty
         avoid = avoid.split() if avoid else None  # Split avoid string into a list of characters if it's not empty
+        repetition = repetition.split() if repetition else None # Split repetition string into a list of characters that must repeat at least once if it's not empty
         must_include_positions = [(pos[0], int(pos[1:])) for pos in must_pos.split() if pos] if must_pos else None  # Split must_pos string into a list of tuples (char, position) if it's not empty
         avoid_positions = [(pos[0], int(pos[1:])) for pos in avoid_pos.split() if pos] if avoid_pos else None  # Split avoid_pos string into a list of tuples (char, position) if it's not empty
         
         # Filter words based on user criteria
-        filtered_words = filter_words(word_list, length, must_include, avoid, must_include_positions, avoid_positions)
+        filtered_words = filter_words(word_list, length, must_include, avoid, repetition, must_include_positions, avoid_positions)
         
         # Check if no words are found
         if not filtered_words:
